@@ -41,4 +41,12 @@ main {
     align-items: center;
 } main h1{
     font-size: 5em;
+    color: white;
+} main a{
+    color: white;
+    font-size: 2em;
+    text-decoration: none;
+    background-color: black;
+    padding: 1rem;
+    border-radius: 1rem;
 }
