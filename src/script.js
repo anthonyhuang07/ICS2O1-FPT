@@ -1,11 +1,20 @@
-let level, bulletLength, shooting
+let level, bulletLength, shooting, amtShot, beatLength, levelOne, i
 function setup() {
     createCanvas(800, 500);
     ellipseMode(CORNERS)
     frameRate(120)
-    level = [1, 2, 3]
     bulletLength = 0
     shooting = false
+    amtShot = 0
+    beatLength = 100
+    levelOne = {
+        "level": [0,1,2,3,4,5],
+        "settings": {
+            "bpm": 130,
+            "song": "Thermodynamix",
+            "artist": "dj-Nate"
+        },
+    }
 }
 
 function draw() {
@@ -21,6 +30,12 @@ function draw() {
             bulletLength = 0
         }
     }
+    fill(0)
+    textSize(20)
+    text(amtShot,10,20)
+
+    rectMode(CENTER)
+    rect(750, levelOne.settings.bpm += 1, 20, beatLength)
 }
 
 function drawPlayer() {
@@ -33,5 +48,6 @@ function drawPlayer() {
 }
 
 function keyPressed(){
+    amtShot++
     shooting = true
 }
