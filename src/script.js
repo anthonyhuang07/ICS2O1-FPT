@@ -1,19 +1,22 @@
-let level, bulletLength, shooting, amtShot, beatLength, levelOne, i
+let level, bulletLength, shooting, levelOne, i, currentBeat, song
+
 function setup() {
     createCanvas(800, 500);
     ellipseMode(CORNERS)
-    frameRate(120)
+    frameRate(60)
     bulletLength = 0
     shooting = false
     amtShot = 0
-    beatLength = 100
+    currentBeat = 0
+    song = loadSound("../assets/sounds/songs/Thermodynamix.mp3");
     levelOne = {
-        "level": [0,1,2,3,4,5],
         "settings": {
             "bpm": 130,
             "song": "Thermodynamix",
-            "artist": "dj-Nate"
+            "artist": "dj-Nate",
+            "path": "../assets/sounds/songs/Thermodynamix.mp3"
         },
+        "actions": [{"beat": 1, "duration": 2.16666666667}]
     }
 }
 
@@ -22,6 +25,7 @@ function draw() {
     drawPlayer()
     rectMode(CORNERS)
     if (shooting) {
+        song.play()
         fill(255)
         rect(125+bulletLength,245,800,255)
         bulletLength += 500
@@ -30,12 +34,9 @@ function draw() {
             bulletLength = 0
         }
     }
-    fill(0)
-    textSize(20)
-    text(amtShot,10,20)
 
-    rectMode(CENTER)
-    rect(750, levelOne.settings.bpm += 1, 20, beatLength)
+    fill(0)
+    rect(740, currentBeat, 760, 100 + (currentBeat += 1))
 }
 
 function drawPlayer() {
@@ -48,6 +49,5 @@ function drawPlayer() {
 }
 
 function keyPressed(){
-    amtShot++
     shooting = true
 }
