@@ -5,3 +5,7 @@
 # 2023-05-30
 
 - Started working on how the level will be read, by creating an object with all the level information. Still figuring out how to implement it, might be the most difficult part of this game.
+
+# 2023-05-31
+
+- Added music, and still worked on the level object, still struggling and wondering how this thing would work.

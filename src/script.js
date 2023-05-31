@@ -1,4 +1,4 @@
-let level, bulletLength, shooting, levelOne, i, currentBeat, song
+let level, bulletLength, shooting, levelOne, i, currentBeat
 
 function setup() {
     createCanvas(800, 500);
@@ -25,7 +25,6 @@ function draw() {
     drawPlayer()
     rectMode(CORNERS)
     if (shooting) {
-        song.play()
         fill(255)
         rect(125+bulletLength,245,800,255)
         bulletLength += 500
@@ -35,8 +34,13 @@ function draw() {
         }
     }
 
+    if(currentBeat == 250){
+        song.setVolume(0.1)
+        song.play()
+    }
+
     fill(0)
-    rect(740, currentBeat, 760, 100 + (currentBeat += 1))
+    rect(740, currentBeat, 760, 100 + (currentBeat += 2))
 }
 
 function drawPlayer() {
