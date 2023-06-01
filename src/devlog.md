@@ -9,3 +9,7 @@
 # 2023-05-31
 
 - Added music, and still worked on the level object, still struggling and wondering how this thing would work.
+
+# 2023-06-01
+
+- Changed the song, still trying to figure this thing out. Banging my head right now
