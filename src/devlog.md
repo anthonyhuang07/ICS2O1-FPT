@@ -13,3 +13,8 @@
 # 2023-06-01
 
 - Changed the song, still trying to figure this thing out. Banging my head right now
+
+# 2023-06-02
+
+- Added a basic menu
+- Still trying to figure out how to get the beats to fall at the correct speed and beat.
