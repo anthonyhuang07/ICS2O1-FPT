@@ -13,9 +13,6 @@ function preload(){
         },
         "actions": [
             {"beat": 1, "duration": 1.66},
-            {"beat": 2, "duration": 1.66},
-            {"beat": 3, "duration": 1.66},
-            {"beat": 4, "duration": 1.66},
         ]
     }
 
@@ -64,9 +61,9 @@ function draw() {
             playSong = false
         }
     
-        for(let i = 0; i < levelOne.actions.length; i++){
+        for(let i = 0; i < 8; i++){
             fill(0)
-            rect(740, currentBeat-((500*levelOne.actions[i].duration)*i), 760, 50 + (currentBeat += ((500/60)/levelOne.actions[i].duration)) -((500*levelOne.actions[i].duration)*i))
+            rect(740, currentBeat-(500*i), 760, 75 + (currentBeat += 80/55.5) -(500*i))
         }
     }
 }

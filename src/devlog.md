@@ -18,3 +18,8 @@
 
 - Added a basic menu
 - Still trying to figure out how to get the beats to fall at the correct speed and beat.
+
+# 2023-06-06
+
+- Changed how the beat array would work
+- Still trying to figure out how to get the beats to fall at the correct speed and beat.
