@@ -1,4 +1,4 @@
-let level, bulletLength, shooting, levelOne, i, currentBeat, playSong, songPlayed
+let level, bulletLength, shooting, levelOne, i, currentBeat, playSong, songPlayed, speedMultiplier
 
 let menuMode
 
@@ -9,10 +9,10 @@ function preload(){
             "song": "Idolize",
             "artist": "Creo",
             "path": "../assets/sounds/songs/Idolize.mp3",
-            "startTime": 100
+            "startTime": 156
         },
         "actions": [
-            {"beat": 1, "duration": 1.66},
+            {"beat": 32, "speedMultiplier": 2},
         ]
     }
 
@@ -30,6 +30,7 @@ function setup() {
     shooting = false
     amtShot = 0
     currentBeat = -1500
+    speedMultiplier = 1
 }
 
 function draw() {
@@ -49,21 +50,30 @@ function draw() {
             }
         }
     
-        if(currentBeat >= 0 && !songPlayed){
+        if(currentBeat >= 50 && !songPlayed){
             playSong = true
             songPlayed = true
         }
 
         if(playSong && songPlayed){
             song.play()
-            song.jump(156,song.duration()-156)
+            song.jump(levelOne.settings.startTime,song.duration()-levelOne.settings.startTime)
             song.setVolume(0.1)
             playSong = false
+            console.log(currentBeat)
+        }
+
+        if(currentBeat%50 == 0){
+            shooting = true
         }
     
-        for(let i = 0; i < 8; i++){
+        currentBeat += 11.1833333333
+        for(let i = 0; i < 64; i++){
             fill(0)
-            rect(740, currentBeat-(500*i), 760, 75 + (currentBeat += 80/55.5) -(500*i))
+            if(i == levelOne.actions[0].beat){
+                
+            }
+            rect(740, currentBeat-(500*i/), 760, 200 + currentBeat-(500*i/))
         }
     }
 }

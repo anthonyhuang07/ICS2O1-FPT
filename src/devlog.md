@@ -23,3 +23,8 @@
 
 - Changed how the beat array would work
 - Still trying to figure out how to get the beats to fall at the correct speed and beat.
+
+# 2023-06-07
+
+- Figured it out w/help of Mr. Klimowski
+- Now going to actually start mapping the beatmap
