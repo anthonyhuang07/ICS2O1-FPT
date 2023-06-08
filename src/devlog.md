@@ -28,3 +28,9 @@
 
 - Figured it out w/help of Mr. Klimowski
 - Now going to actually start mapping the beatmap
+
+# 2023-06-08
+
+- Figured out how to change tempo (multiplying speed) but am encountering some issues
+- Added fonts to the menu
+- Refactored redundancy in music playing

@@ -1,4 +1,6 @@
-let level, bulletLength, shooting, levelOne, i, currentBeat, playSong, songPlayed, speedMultiplier
+let bulletLength, shooting, levelOne, currentBeat, songPlayed, currentSpeed
+
+let chokokutai, kanit
 
 let menuMode
 
@@ -12,9 +14,15 @@ function preload(){
             "startTime": 156
         },
         "actions": [
+            {"beat": 16, "speedMultiplier": 2},
+            {"beat": 20, "speedMultiplier": 1},
             {"beat": 32, "speedMultiplier": 2},
+            {"beat": 34, "speedMultiplier": 1},
         ]
     }
+
+    chokokutai = loadFont("../assets/fonts/Chokokutai.ttf")
+    kanit = loadFont("../assets/fonts/Kanit.ttf")
 
     song = loadSound(levelOne.settings.path);
 }
@@ -30,7 +38,7 @@ function setup() {
     shooting = false
     amtShot = 0
     currentBeat = -1500
-    speedMultiplier = 1
+    currentSpeed = 1
 }
 
 function draw() {
@@ -51,29 +59,25 @@ function draw() {
         }
     
         if(currentBeat >= 50 && !songPlayed){
-            playSong = true
-            songPlayed = true
-        }
-
-        if(playSong && songPlayed){
             song.play()
             song.jump(levelOne.settings.startTime,song.duration()-levelOne.settings.startTime)
             song.setVolume(0.1)
-            playSong = false
+            songPlayed = true
             console.log(currentBeat)
         }
-
-        if(currentBeat%50 == 0){
-            shooting = true
-        }
     
-        currentBeat += 11.1833333333
-        for(let i = 0; i < 64; i++){
+        currentBeat += 11.083833333333
+        currentSpeed = 1
+        
+        for(let i = 0; i < 96; i++){
             fill(0)
-            if(i == levelOne.actions[0].beat){
-                
+            stroke(255)
+            for(let j = 0; j < levelOne.actions.length; j++){
+                if(i == levelOne.actions[j].beat){
+                    currentSpeed = levelOne.actions[j].speedMultiplier
+                }
             }
-            rect(740, currentBeat-(500*i/), 760, 200 + currentBeat-(500*i/))
+            rect(740, currentBeat-(500*i/currentSpeed), 760, 200 + currentBeat-(500*i/currentSpeed))
         }
     }
 }
@@ -89,8 +93,12 @@ function drawPlayer() {
 function menu(){
     background(255)
     textAlign(CENTER)
-    textSize(50)
-    text("Rhythm Revolver\n\nClick to Play",400,250)
+    textSize(75)
+    textFont(chokokutai)
+    text("Rhythm Revolver",400,250)
+    textSize(25)
+    textFont(kanit)
+    text("Click To Play",400,300)
     if(mouseIsPressed){
         menuMode = false
     }
