@@ -34,3 +34,9 @@
 - Figured out how to change tempo (multiplying speed) but am encountering some issues
 - Added fonts to the menu
 - Refactored redundancy in music playing
+
+# 2023-06-09
+
+- Added a menu bar at the top of the level
+- Added a pause button (temporary, returns back to main menu and resets the level)
+- Added a background image and some strokes
