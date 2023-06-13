@@ -1,4 +1,4 @@
-let bulletLength, shooting, levelOne, currentBeat, songPlayed, currentSpeed
+let bulletLength, shooting, levelOne, currentBeat, songPlayed, currentSpeed, points, i
 
 let chokokutai, kanit
 
@@ -33,32 +33,33 @@ function setup() {
     ellipseMode(CORNERS)
     frameRate(60)
     menuMode = true
-    playSong = false
     songPlayed = false
     bulletLength = 0
     shooting = false
-    amtShot = 0
     currentBeat = -1500
     currentSpeed = 1
+    points = 0
 }
 
 function draw() {
     if (menuMode) {
         menu()
     } else if (!menuMode) {
+        fill(0)
         tint(127, 255);
         background(levelOne.settings.background)
         tint(255, 255);
         drawPlayer()
         rectMode(CORNERS)
         if (shooting) {
+            if(currentBeat > 100 && currentBeat < 100){
+                points++
+            }
             fill(255)
             rect(125 + bulletLength, 246, 800, 254)
-            bulletLength += 500
-            if (bulletLength >= 800) {
-                shooting = false
-                bulletLength = 0
-            }
+            bulletLength += 800
+            shooting = false
+            bulletLength = 0
         }
 
         // top menu
@@ -74,6 +75,8 @@ function draw() {
         noStroke()
         rect(18,15,28,45)
         rect(32,15,42,45)
+        fill(255)
+        text(points,100,37.5)
 
         if (currentBeat >= 50 && !songPlayed) {
             song.play()
@@ -86,15 +89,15 @@ function draw() {
         currentBeat += 11.083833333333
         currentSpeed = 1
 
-        for (let i = 0; i < 96; i++) {
-            fill(0)
-            stroke(255)
+        for (i = 0; i < 96; i++) {
+            fill(255)
             for (let j = 0; j < levelOne.actions.length; j++) {
                 if (i == levelOne.actions[j].beat) {
                     currentSpeed = levelOne.actions[j].speedMultiplier
                 }
             }
             rect(740, currentBeat - (500 * i / currentSpeed), 760, 200 + currentBeat - (500 * i / currentSpeed))
+            fill(0)
         }
     }
 }

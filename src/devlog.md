@@ -40,3 +40,10 @@
 - Added a menu bar at the top of the level
 - Added a pause button (temporary, returns back to main menu and resets the level)
 - Added a background image and some strokes
+
+# 2023-06-13
+
+- Added points
+- Changed tiles to white
+- Starting the point system
+- Trying to figure out an automatic shooting system, to make the point system development process easier
