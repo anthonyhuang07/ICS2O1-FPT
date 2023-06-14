@@ -1,8 +1,10 @@
-let bulletLength, shooting, levelOne, currentBeat, songPlayed, currentSpeed, points, i
+let bulletLength, shooting, levelOne, currentBeat, songPlayed, currentSpeed, points, i, time
 
 let chokokutai, kanit
 
 let menuMode
+
+const floor10 = (value, exp) => decimalAdjust("floor", value, exp);
 
 function preload() {
     levelOne = {
@@ -39,6 +41,7 @@ function setup() {
     currentBeat = -1500
     currentSpeed = 1
     points = 0
+    time = 0
 }
 
 function draw() {
@@ -56,7 +59,7 @@ function draw() {
                 points++
             }
             fill(255)
-            rect(125 + bulletLength, 246, 800, 254)
+            rect(160 + bulletLength, 246, 800, 254)
             bulletLength += 800
             shooting = false
             bulletLength = 0
@@ -89,7 +92,13 @@ function draw() {
         currentBeat += 11.083833333333
         currentSpeed = 1
 
-        for (i = 0; i < 96; i++) {
+        for (let m = 0; m < 100; m++){
+            if(Math.floor(time, -1) == floor10(time*m, -1)){
+                shooting = true
+            }
+        }
+
+        for (i = 0; i < 88; i++) {
             fill(255)
             for (let j = 0; j < levelOne.actions.length; j++) {
                 if (i == levelOne.actions[j].beat) {
@@ -99,15 +108,25 @@ function draw() {
             rect(740, currentBeat - (500 * i / currentSpeed), 760, 200 + currentBeat - (500 * i / currentSpeed))
             fill(0)
         }
+
+        time+= 1/(60/(80/60))
+
+        if(String(floor10(time, -1)).length == 1 || String(floor10(time, -1)).length == 2){
+            console.log(floor10(time, -1))
+        }
     }
 }
 
 function drawPlayer() {
     noStroke()
     rectMode(CORNERS)
-    rect(10, 240, 40, 340)
+    stroke(255)
+    fill(color("#261519"))
+    rect(10, 240, 40, 330)
     rectMode(CENTER)
-    rect(75, 250, 100, 20)
+    noStroke()
+    fill(color("#B9B9B9"))
+    rect(84, 249, 150, 20)
 }
 
 function menu() {
@@ -133,3 +152,18 @@ function mousePressed() {
         menuMode = false
     }
 }
+
+function decimalAdjust(type, value, exp) {
+    type = String(type);
+    exp = Number(exp);
+    value = Number(value);
+    if (exp % 1 !== 0 || Number.isNaN(value)) {
+      return NaN;
+    } else if (exp === 0) {
+      return Math[type](value);
+    }
+    const [magnitude, exponent = 0] = value.toString().split("e");
+    const adjustedValue = Math[type](`${magnitude}e${exponent - exp}`);
+    const [newMagnitude, newExponent = 0] = adjustedValue.toString().split("e");
+    return Number(`${newMagnitude}e${+newExponent + exp}`);
+  }

@@ -47,3 +47,8 @@
 - Changed tiles to white
 - Starting the point system
 - Trying to figure out an automatic shooting system, to make the point system development process easier
+
+# 2023-06-14
+
+- Added auto shooting system, still kinda off
+- Changed revolver design
