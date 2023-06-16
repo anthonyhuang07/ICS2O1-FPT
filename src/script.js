@@ -92,10 +92,9 @@ function draw() {
         currentBeat += 11.083833333333
         currentSpeed = 1
 
-        for (let m = 0; m < 100; m++){
-            if(Math.floor(time, -1) == floor10(time*m, -1)){
-                shooting = true
-            }
+        if(Math.floor(time, -1) == floor10(time, -1)){
+            shooting = true
+            points++
         }
 
         for (i = 0; i < 88; i++) {

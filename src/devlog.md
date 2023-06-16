@@ -52,3 +52,7 @@
 
 - Added auto shooting system, still kinda off
 - Changed revolver design
+
+# 2023-06-15
+
+- Rewrote autoshoot code, removed for loop (useless)
