@@ -1,4 +1,4 @@
-let bulletLength, shooting, levelOne, currentBeat, songPlayed, currentSpeed, points, i, time
+let bulletLength, shooting, levelOne, currentBeat, songPlayed, points, i, j, time
 
 let chokokutai, kanit
 
@@ -16,7 +16,7 @@ function preload() {
             "background": loadImage("../assets/images/backgrounds/levelOne.jpg"),
             "startTime": 156
         },
-        "beat": [1,2,3,4,8]
+        "beat": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,33,34,35,36,37,38,39,40,41,42,43,44,47,48,49,50,51,52,53,54,55,56,57,58,59,60]
     }
 
     chokokutai = loadFont("../assets/fonts/Chokokutai.ttf")
@@ -33,7 +33,7 @@ function setup() {
     songPlayed = false
     bulletLength = 0
     shooting = false
-    currentBeat = -1500
+    currentBeat = -1000
     currentSpeed = 1
     points = 0
     time = 0
@@ -49,13 +49,14 @@ function draw() {
         tint(255, 255);
         drawPlayer()
         rectMode(CORNERS)
+
         if (shooting) {
-            points++
             fill(255)
             rect(160 + bulletLength, 246, 800, 254)                                                     
             bulletLength += 800
-            shooting = false
             bulletLength = 0
+            points++
+            shooting = false
         }
 
         // top menu
@@ -83,24 +84,19 @@ function draw() {
         }
 
         currentBeat += 11.083833333333
-        currentSpeed = 1
-
-        if(Math.floor(time, -1) == floor10(time, -1)){
-            shooting = true
-            points++
-        }
 
         for (i = 0; i < 88; i++) {
             fill(255)
             for (j = 0; j < levelOne.beat.length; j++){
-                if(i == j){
-                    rect(740, currentBeat - (500 * j / currentSpeed), 760, 200 + currentBeat - (500 * j / currentSpeed))
+                if(i == levelOne.beat[j]){
+                    rect(740, currentBeat - (500 * i), 760, 200 + currentBeat - (500 * i))
                 }
             }
             fill(0)
         }
 
         time+= 1/(60/(80/60))
+        console.log(time)
 
         if(String(floor10(time, -1)).length == 1 || String(floor10(time, -1)).length == 2){
             console.log(floor10(time, -1))
@@ -111,11 +107,9 @@ function draw() {
 function drawPlayer() {
     noStroke()
     rectMode(CORNERS)
-    stroke(255)
     fill(color("#261519"))
     rect(10, 240, 40, 330)
     rectMode(CENTER)
-    noStroke()
     fill(color("#B9B9B9"))
     rect(84, 249, 150, 20)
 }
