@@ -16,12 +16,7 @@ function preload() {
             "background": loadImage("../assets/images/backgrounds/levelOne.jpg"),
             "startTime": 156
         },
-        "actions": [
-            { "beat": 16, "speedMultiplier": 2 },
-            { "beat": 20, "speedMultiplier": 1 },
-            { "beat": 32, "speedMultiplier": 2 },
-            { "beat": 34, "speedMultiplier": 1 },
-        ]
+        "beat": [1,2,3,4,8]
     }
 
     chokokutai = loadFont("../assets/fonts/Chokokutai.ttf")
@@ -55,11 +50,9 @@ function draw() {
         drawPlayer()
         rectMode(CORNERS)
         if (shooting) {
-            if(currentBeat > 100 && currentBeat < 100){
-                points++
-            }
+            points++
             fill(255)
-            rect(160 + bulletLength, 246, 800, 254)
+            rect(160 + bulletLength, 246, 800, 254)                                                     
             bulletLength += 800
             shooting = false
             bulletLength = 0
@@ -99,12 +92,11 @@ function draw() {
 
         for (i = 0; i < 88; i++) {
             fill(255)
-            for (let j = 0; j < levelOne.actions.length; j++) {
-                if (i == levelOne.actions[j].beat) {
-                    currentSpeed = levelOne.actions[j].speedMultiplier
+            for (j = 0; j < levelOne.beat.length; j++){
+                if(i == j){
+                    rect(740, currentBeat - (500 * j / currentSpeed), 760, 200 + currentBeat - (500 * j / currentSpeed))
                 }
             }
-            rect(740, currentBeat - (500 * i / currentSpeed), 760, 200 + currentBeat - (500 * i / currentSpeed))
             fill(0)
         }
 
@@ -156,9 +148,7 @@ function decimalAdjust(type, value, exp) {
     type = String(type);
     exp = Number(exp);
     value = Number(value);
-    if (exp % 1 !== 0 || Number.isNaN(value)) {
-      return NaN;
-    } else if (exp === 0) {
+    if (exp === 0) {
       return Math[type](value);
     }
     const [magnitude, exponent = 0] = value.toString().split("e");

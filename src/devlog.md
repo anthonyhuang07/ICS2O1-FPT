@@ -56,3 +56,7 @@
 # 2023-06-15
 
 - Rewrote autoshoot code, removed for loop (useless)
+
+# 2023-06-19
+
+- I HAVE TO REWRITE THE ENTIRE CODE TO MAKE THE BEATS INDIVIDUAL IN THE STUPID ARRAY. THERES LIKE 3 DAYS LEFT...
