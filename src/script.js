@@ -1,7 +1,7 @@
 // #region global variables
 
 // declare game variables
-let bulletLength, shooting, level, currentBeat, songPlayed, points, rank, percent, totalBeats, beats
+let bulletLength, shooting, level, currentBeat, songPlayed, points, rank, percent, totalBeats
 // declare iterator variables
 let i, j
 // declare font variables
@@ -50,7 +50,6 @@ function setup() {
     ellipseMode(CORNERS)
     frameRate(75)
     menuMode = true
-    beats = level.beat
 }
 
 function draw() {
@@ -175,7 +174,14 @@ function menu() {
     currentBeat = -1000
     points = 0
     totalBeats = level.beat.length
-    level.beat = beats
+    level.beat = [
+        // predrop
+        0, 2, 4, 6, 8, 10, 12, 14, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62,
+        // drop
+        66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 81, 83, 85, 87, 89, 91, 93, 95, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 115, 117, 119, 121, 123, 125, 127,
+        // drop pt2
+        130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 147, 149, 151, 153, 155, 157, 159, 162, 163, 164, 165, 166, 167, 168, 170, 172, 174
+    ]
 }
 
 function complete() {
@@ -243,18 +249,4 @@ function mousePressed() {
     if (!menuMode && mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50) {
         menuMode = true
     }
-}
-
-// Non P5JS stuff
-const imgInput = document.getElementById("imginput")
-
-if (imgInput.files[0]) {
-    const file = imgInput.files[0];
-    const reader = new FileReader();
-    reader.onload = function () {
-      const imageUrl = reader.result;
-      console.log(imageUrl)
-      level.settings.background = loadImage(imageUrl);
-    };
-    reader.readAsDataURL(file);
 }

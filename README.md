@@ -31,8 +31,8 @@ Goal of the game: Try to get the highest accuracy possible!
 You must edit the following properties:
 
 - bpm: the level's BPM. Make sure to look up the BPM of the song you're using.
-__- path: the path to the song's MP3 file. A YouTube link or anything else will not work, you must have a URL that ends with `.mp3`. If this isn't possible, you may set up your own GitHub repository, download the MP3 file of the song you want, upload it to the repository and copy the link of the MP3 file in that repository.__
-__- background: the path to the background's image URL. You may search up any image, right click on the image and click `"Copy Image Address"`.__
+~~- path: the path to the song's MP3 file. A YouTube link or anything else will not work, you must have a URL that ends with `.mp3`. If this isn't possible, you may set up your own GitHub repository, download the MP3 file of the song you want, upload it to the repository and copy the link of the MP3 file in that repository.~~
+~~- background: the path to the background's image URL. You may search up any image, right click on the image and click `"Copy Image Address"`.~~
 - startTime: the time when the song starts playing, in seconds.
 - speedMultiplier: multiplies the BPM of your current BPM without affecting the speed at which beats fall. `Example: speedMultiplier of 2 will make the beats fall at Double Time, and 1/2 will make the beats fall at Half Time.`
 - beatHeight: the height of a single beat. The smaller the value, the smaller the hitbox the beat will be, making it harder to hit.
