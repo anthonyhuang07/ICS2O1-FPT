@@ -1,7 +1,7 @@
 // #region global variables
 
 // declare game variables
-let bulletLength, shooting, level, currentBeat, songPlayed, points, hearts, rank, percent
+let bulletLength, shooting, level, currentBeat, songPlayed, points, rank, percent, totalBeats, beats
 // declare iterator variables
 let i, j
 // declare font variables
@@ -20,7 +20,8 @@ function preload() {
             "path": "../assets/sounds/songs/Idolize.mp3",
             "background": loadImage("../assets/images/backgrounds/levelOne.jpg"),
             "startTime": 156,
-            "speedMultiplier": 2
+            "speedMultiplier": 2,
+            "beatHeight": 200
         },
         // actual level: all the beats
         "beat": [
@@ -38,8 +39,9 @@ function preload() {
     chokokutai = loadFont("../assets/fonts/Chokokutai.ttf")
     kanit = loadFont("../assets/fonts/Kanit.ttf")
 
-    // load song
+    // load sounds
     song = loadSound(level.settings.path);
+    hit = loadSound("../assets/sounds/hit.mp3")
 }
 
 function setup() {
@@ -48,6 +50,7 @@ function setup() {
     ellipseMode(CORNERS)
     frameRate(75)
     menuMode = true
+    beats = level.beat
 }
 
 function draw() {
@@ -71,7 +74,7 @@ function draw() {
         // #region top menu
         fill(0)
         stroke(255)
-        rect(10, 10, 600, 50)
+        rect(10, 10, 200, 50)
         fill(255)
         if (mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50) {
             fill(200)
@@ -83,22 +86,16 @@ function draw() {
         rect(32, 15, 42, 45)
         fill(255)
         text(`${points} Points`, 120, 37.5)
-        text(`${hearts} Hearts`, 540, 37.5)
         // #endregion
 
         // #region play song when beats start falling
         if (currentBeat >= 99 && !songPlayed) {
             song.play()
             song.jump(level.settings.startTime, song.duration() - level.settings.startTime)
-            song.setVolume(0.1)
+            song.setVolume(0.08)
             songPlayed = true
         }
         // #endregion
-
-        if (100 + (currentBeat % 250) < 205 && 100 + (currentBeat % 250) > 194) {
-            console.log("Current Beat: " + currentBeat + " | Modulo: " + (100 + (currentBeat % 250)))
-            shooting = true
-        }
 
         // #region beat falling code
 
@@ -110,11 +107,18 @@ function draw() {
             // checks entire beat array if it matches the current beat number - if yes, draws the beat. this allows for gaps (e.g. notes 145 -> 147)
             for (j = 0; j < level.beat.length; j++) {
                 if (i == level.beat[j]) {
-                    rect(740, currentBeat - (500 * i / level.settings.speedMultiplier), 760, 200 + currentBeat - (500 * i / level.settings.speedMultiplier))
+                    rect(740, currentBeat - (500 * i / level.settings.speedMultiplier), 760, level.settings.beatHeight + currentBeat - (500 * i / level.settings.speedMultiplier))
+                    if (shooting && (currentBeat - (500 * i / level.settings.speedMultiplier))<=250&&(currentBeat - (500 * i / level.settings.speedMultiplier)+level.settings.beatHeight)>=250){
+                        const x = level.beat.indexOf(i)
+                        level.beat.splice(x,1)
+                        level.beat.splice[j, 1]
+                        points++
+                        hit.play()
+                        hit.setVolume(2)
+                    } else if ((shooting && (currentBeat - (500 * i / level.settings.speedMultiplier))>=250&&(currentBeat - (500 * i / level.settings.speedMultiplier)+level.settings.beatHeight)<=250)){
+                        points--
+                    }
                 }
-                /*if (shooting&& (currentBeat - (500 * i / 2))>=146){
-                    points++         
-                }*/
             }
             fill(0)
         }
@@ -130,10 +134,6 @@ function draw() {
             bulletLength = 0
 
             shooting = false
-
-            /* if (100 + (currentBeat % 250) < 300 && 100 + (currentBeat % 250) > 100) {
-                points++
-            } */
         }
         // #endregion
 
@@ -174,12 +174,13 @@ function menu() {
     shooting = false
     currentBeat = -1000
     points = 0
-    hearts = 5
+    totalBeats = level.beat.length
+    level.beat = beats
 }
 
 function complete() {
     // gets percent accuracy
-    percent = Math.round((points / level.beat.length) * 100)
+    percent = Math.round((points / totalBeats) * 100)
 
     // checks for rank using percentage
     switch (true) {
@@ -241,6 +242,19 @@ function mousePressed() {
 
     if (!menuMode && mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50) {
         menuMode = true
-        currentBeat = -1500
     }
+}
+
+// Non P5JS stuff
+const imgInput = document.getElementById("imginput")
+
+if (imgInput.files[0]) {
+    const file = imgInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function () {
+      const imageUrl = reader.result;
+      console.log(imageUrl)
+      level.settings.background = loadImage(imageUrl);
+    };
+    reader.readAsDataURL(file);
 }

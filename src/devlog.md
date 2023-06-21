@@ -76,3 +76,6 @@
 
 - Refactored code for currentBeat
 - Commented code
+- **HITBOXES FINALLY WORK!!!!!!!!!!!!!!!!!!! THE FINAL OBSTACLE IS OVER!!!!!!!!!!!!!**
+    - Removes beats on hit
+- Removes heart system, in favor of accuracy system. You can only die if your points reach negative
