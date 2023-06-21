@@ -1,7 +1,7 @@
 // #region global variables
 
 // declare game variables
-let bulletLength, shooting, levelOne, currentBeat, songPlayed, points, hearts, rank, percent
+let bulletLength, shooting, level, currentBeat, songPlayed, points, hearts, rank, percent
 // declare iterator variables
 let i, j
 // declare font variables
@@ -13,12 +13,10 @@ let menuMode, completeMode
 
 function preload() {
     // #region level object: includes all info the level needs
-    levelOne = {
+    level = {
         // level settings
         "settings": {
             "bpm": 80,
-            "song": "Idolize",
-            "artist": "Creo",
             "path": "../assets/sounds/songs/Idolize.mp3",
             "background": loadImage("../assets/images/backgrounds/levelOne.jpg"),
             "startTime": 156,
@@ -41,14 +39,14 @@ function preload() {
     kanit = loadFont("../assets/fonts/Kanit.ttf")
 
     // load song
-    song = loadSound(levelOne.settings.path);
+    song = loadSound(level.settings.path);
 }
 
 function setup() {
     // declare basics
     createCanvas(800, 500);
     ellipseMode(CORNERS)
-    frameRate(60)
+    frameRate(75)
     menuMode = true
 }
 
@@ -62,7 +60,7 @@ function draw() {
         // #region draw background
         fill(0)
         tint(127, 255);
-        background(levelOne.settings.background)
+        background(level.settings.background)
         tint(255, 255);
         // #endregion
 
@@ -91,28 +89,28 @@ function draw() {
         // #region play song when beats start falling
         if (currentBeat >= 99 && !songPlayed) {
             song.play()
-            song.jump(levelOne.settings.startTime, song.duration() - levelOne.settings.startTime)
+            song.jump(level.settings.startTime, song.duration() - level.settings.startTime)
             song.setVolume(0.1)
             songPlayed = true
         }
         // #endregion
 
-        /* if (100 + (currentBeat % 250) < 205 && 100 + (currentBeat % 250) > 194) {
+        if (100 + (currentBeat % 250) < 205 && 100 + (currentBeat % 250) > 194) {
             console.log("Current Beat: " + currentBeat + " | Modulo: " + (100 + (currentBeat % 250)))
             shooting = true
-        } */
+        }
 
         // #region beat falling code
 
         // how fast the beats fall
-        currentBeat += (500 * (levelOne.settings.bpm)) / 3600
+        currentBeat += (500 * (level.settings.bpm)) / (frameRate()*60)
 
         for (i = 0; i < 176; i++) {
             fill(255)
             // checks entire beat array if it matches the current beat number - if yes, draws the beat. this allows for gaps (e.g. notes 145 -> 147)
-            for (j = 0; j < levelOne.beat.length; j++) {
-                if (i == levelOne.beat[j]) {
-                    rect(740, currentBeat - (500 * i / levelOne.settings.speedMultiplier), 760, 200 + currentBeat - (500 * i / levelOne.settings.speedMultiplier))
+            for (j = 0; j < level.beat.length; j++) {
+                if (i == level.beat[j]) {
+                    rect(740, currentBeat - (500 * i / level.settings.speedMultiplier), 760, 200 + currentBeat - (500 * i / level.settings.speedMultiplier))
                 }
                 /*if (shooting&& (currentBeat - (500 * i / 2))>=146){
                     points++         
@@ -181,7 +179,7 @@ function menu() {
 
 function complete() {
     // gets percent accuracy
-    percent = Math.round((points / levelOne.beat.length) * 100)
+    percent = Math.round((points / level.beat.length) * 100)
 
     // checks for rank using percentage
     switch (true) {
@@ -207,7 +205,7 @@ function complete() {
     // darker bg
     fill(0)
     tint(50, 255);
-    background(levelOne.settings.background)
+    background(level.settings.background)
     tint(255, 255);
 
 
