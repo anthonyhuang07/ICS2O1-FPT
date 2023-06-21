@@ -1,22 +1,29 @@
-let bulletLength, shooting, levelOne, currentBeat, songPlayed, points, i, j, time
+let bulletLength, shooting, levelOne, currentBeat, songPlayed, points, hearts, rank, percent
+
+let i, j
 
 let chokokutai, kanit
 
-let menuMode
-
-const floor10 = (value, exp) => decimalAdjust("floor", value, exp);
+let menuMode, completeMode
 
 function preload() {
     levelOne = {
         "settings": {
-            "bpm": 80,
+            "bpm": 160,
             "song": "Idolize",
             "artist": "Creo",
             "path": "../assets/sounds/songs/Idolize.mp3",
             "background": loadImage("../assets/images/backgrounds/levelOne.jpg"),
             "startTime": 156
         },
-        "beat": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,33,34,35,36,37,38,39,40,41,42,43,44,47,48,49,50,51,52,53,54,55,56,57,58,59,60]
+        "beat": [
+            // predrop
+            0, 2, 4, 6, 8, 10, 12, 14, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62,
+            // drop
+            66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 81, 83, 85, 87, 89, 91, 93, 95, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 115, 117, 119, 121, 123, 125, 127,
+            // drop pt2
+            130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 147, 149, 151, 153, 155, 157, 159, 162, 163, 164, 165, 166, 167, 168, 170, 172, 174
+        ]
     }
 
     chokokutai = loadFont("../assets/fonts/Chokokutai.ttf")
@@ -28,32 +35,28 @@ function preload() {
 function setup() {
     createCanvas(800, 500);
     ellipseMode(CORNERS)
-    frameRate(60)
+    frameRate(75)
     menuMode = true
-    songPlayed = false
-    bulletLength = 0
-    shooting = false
-    currentBeat = -1000
-    currentSpeed = 1
-    points = 0
-    time = 0
 }
 
 function draw() {
     if (menuMode) {
         menu()
-    } else if (!menuMode) {
+    } else if (completeMode) {
+        complete()
+    } else if (!menuMode && !completeMode) {
         fill(0)
         tint(127, 255);
         background(levelOne.settings.background)
         tint(255, 255);
         drawPlayer()
         rectMode(CORNERS)
+        fill(255)
 
         if (shooting) {
-            fill(255)
-            rect(160 + bulletLength, 246, 800, 254)                                                     
-            bulletLength += 800
+            rect(160 + bulletLength, 246, 800, 254)
+            bulletLength = 0
+            bulletLength = 800
             bulletLength = 0
             points++
             shooting = false
@@ -62,44 +65,46 @@ function draw() {
         // top menu
         fill(0)
         stroke(255)
-        rect(10,10,600,50)
+        rect(10, 10, 600, 50)
         fill(255)
-        if(mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50){
+        if (mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50) {
             fill(200)
         }
-        rect(10,10,50,50)
+        rect(10, 10, 50, 50)
         fill(0)
         noStroke()
-        rect(18,15,28,45)
-        rect(32,15,42,45)
+        rect(18, 15, 28, 45)
+        rect(32, 15, 42, 45)
         fill(255)
-        text(points,100,37.5)
+        text(`${points} Points`, 120, 37.5)
+        text(`${hearts} Hearts`, 540, 37.5)
 
         if (currentBeat >= 50 && !songPlayed) {
             song.play()
             song.jump(levelOne.settings.startTime, song.duration() - levelOne.settings.startTime)
             song.setVolume(0.1)
             songPlayed = true
-            console.log(currentBeat)
         }
 
-        currentBeat += 11.083833333333
+        /* if (100 + (currentBeat % 250) < 205 && 100 + (currentBeat % 250) > 195) {
+            console.log("Current Beat: " + currentBeat + " | Modulo: " + (100 + (currentBeat % 250)))
+            shooting = true
+        } */
 
-        for (i = 0; i < 88; i++) {
+        currentBeat += 9 //11.083833333333
+
+        for (i = 0; i < 176; i++) {
             fill(255)
-            for (j = 0; j < levelOne.beat.length; j++){
-                if(i == levelOne.beat[j]){
-                    rect(740, currentBeat - (500 * i), 760, 200 + currentBeat - (500 * i))
+            for (j = 0; j < levelOne.beat.length; j++) {
+                if (i == levelOne.beat[j]) {
+                    rect(740, currentBeat - (500 * i / 2), 760, 200 + currentBeat - (500 * i / 2))
                 }
             }
             fill(0)
         }
 
-        time+= 1/(60/(80/60))
-        console.log(time)
-
-        if(String(floor10(time, -1)).length == 1 || String(floor10(time, -1)).length == 2){
-            console.log(floor10(time, -1))
+        if (currentBeat > 45000) {
+            completeMode = true
         }
     }
 }
@@ -115,6 +120,7 @@ function drawPlayer() {
 }
 
 function menu() {
+    fill(0)
     background(255)
     textAlign(CENTER)
     textSize(75)
@@ -122,31 +128,78 @@ function menu() {
     text("Rhythm Revolver", 400, 250)
     textSize(25)
     textFont(kanit)
-    text("Click To Play", 400, 300)
+    text("Press Any Key To Play", 400, 300)
+
+    song.stop()
+
+    songPlayed = false
+    bulletLength = 0
+    shooting = false
+    currentBeat = -1000
+    points = 0
+    hearts = 5
+}
+
+function complete() {
+    percent = Math.round((points / levelOne.beat.length) * 100)
+    switch (true) {
+        case percent >= 100:
+            rank = "SS - Pure Perfect!"
+            break;
+        case percent >= 95:
+            rank = "S - Awesome!"
+            break;
+        case percent >= 90:
+            rank = "A - Great!"
+            break;
+        case percent >= 80:
+            rank = "B - Good!"
+            break;
+        case percent >= 70:
+            rank = "C - Average!"
+            break;
+        case percent < 70:
+            rank = "D - Bad!"
+    }
+
+    fill(0)
+    tint(50, 255);
+    background(levelOne.settings.background)
+    tint(255, 255);
+
+    fill(255)
+    textAlign(CENTER)
+    textSize(40)
+    text(`Your Score: ${percent}%\nRank: ${rank}`, 400, 250)
+    textSize(30)
+    stroke(255)
+    fill(0)
+    rectMode(CORNERS)
+    rect(350,360,450,420)
+    noStroke()
+    fill(255)
+    text("Menu",400,400)
+
+    song.stop()
 }
 
 function keyPressed() {
-    shooting = true
+    if (menuMode){
+        menuMode = false
+    } else{
+        shooting = true
+    }
 }
 
 function mousePressed() {
-    if(mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50){
+    if(completeMode && mouseX > 350 && mouseX < 450 && mouseY < 420 && mouseY > 360){
+        console.log("sd")
+        menuMode = true
+        completeMode = false
+    }
+
+    if (!menuMode && mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50) {
         menuMode = true
         currentBeat = -1500
-    } else{
-        menuMode = false
     }
 }
-
-function decimalAdjust(type, value, exp) {
-    type = String(type);
-    exp = Number(exp);
-    value = Number(value);
-    if (exp === 0) {
-      return Math[type](value);
-    }
-    const [magnitude, exponent = 0] = value.toString().split("e");
-    const adjustedValue = Math[type](`${magnitude}e${exponent - exp}`);
-    const [newMagnitude, newExponent = 0] = adjustedValue.toString().split("e");
-    return Number(`${newMagnitude}e${+newExponent + exp}`);
-  }

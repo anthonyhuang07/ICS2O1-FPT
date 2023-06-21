@@ -60,3 +60,14 @@
 # 2023-06-19
 
 - I HAVE TO REWRITE THE ENTIRE CODE TO MAKE THE BEATS INDIVIDUAL IN THE STUPID ARRAY. THERES LIKE 3 DAYS LEFT...
+
+# 2023-06-20
+
+- Rewrote the entire mapping system, using an array with notes at 160BPM.
+- Finished mapping the level
+- Added hearts
+- Added Accuracy + Rank
+- Added end screen - return to menu button
+- Improved autoshoot - using modulo of currentBeat instead of time
+- Changed Click to play -> press to play
+- Currently optimized for 75Hz monitors - will change tomorrow (hopefully)
