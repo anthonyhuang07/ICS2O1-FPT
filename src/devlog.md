@@ -71,3 +71,8 @@
 - Improved autoshoot - using modulo of currentBeat instead of time
 - Changed Click to play -> press to play
 - Currently optimized for 75Hz monitors - will change tomorrow (hopefully)
+
+# 2023-06-21 | FINAL DAY
+
+- Refactored code for currentBeat
+- Commented code

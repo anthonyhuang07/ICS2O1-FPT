@@ -1,21 +1,30 @@
+// #region global variables
+
+// declare game variables
 let bulletLength, shooting, levelOne, currentBeat, songPlayed, points, hearts, rank, percent
-
+// declare iterator variables
 let i, j
-
+// declare font variables
 let chokokutai, kanit
-
+// declare menu variables
 let menuMode, completeMode
 
+// #endregion
+
 function preload() {
+    // #region level object: includes all info the level needs
     levelOne = {
+        // level settings
         "settings": {
-            "bpm": 160,
+            "bpm": 80,
             "song": "Idolize",
             "artist": "Creo",
             "path": "../assets/sounds/songs/Idolize.mp3",
             "background": loadImage("../assets/images/backgrounds/levelOne.jpg"),
-            "startTime": 156
+            "startTime": 156,
+            "speedMultiplier": 2
         },
+        // actual level: all the beats
         "beat": [
             // predrop
             0, 2, 4, 6, 8, 10, 12, 14, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62,
@@ -25,17 +34,21 @@ function preload() {
             130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 147, 149, 151, 153, 155, 157, 159, 162, 163, 164, 165, 166, 167, 168, 170, 172, 174
         ]
     }
+    // #endregion
 
+    // load fonts
     chokokutai = loadFont("../assets/fonts/Chokokutai.ttf")
     kanit = loadFont("../assets/fonts/Kanit.ttf")
 
+    // load song
     song = loadSound(levelOne.settings.path);
 }
 
 function setup() {
+    // declare basics
     createCanvas(800, 500);
     ellipseMode(CORNERS)
-    frameRate(75)
+    frameRate(60)
     menuMode = true
 }
 
@@ -45,24 +58,19 @@ function draw() {
     } else if (completeMode) {
         complete()
     } else if (!menuMode && !completeMode) {
+
+        // #region draw background
         fill(0)
         tint(127, 255);
         background(levelOne.settings.background)
         tint(255, 255);
-        drawPlayer()
+        // #endregion
+
+        drawPlayer();
+
         rectMode(CORNERS)
-        fill(255)
 
-        if (shooting) {
-            rect(160 + bulletLength, 246, 800, 254)
-            bulletLength = 0
-            bulletLength = 800
-            bulletLength = 0
-            points++
-            shooting = false
-        }
-
-        // top menu
+        // #region top menu
         fill(0)
         stroke(255)
         rect(10, 10, 600, 50)
@@ -78,31 +86,60 @@ function draw() {
         fill(255)
         text(`${points} Points`, 120, 37.5)
         text(`${hearts} Hearts`, 540, 37.5)
+        // #endregion
 
-        if (currentBeat >= 50 && !songPlayed) {
+        // #region play song when beats start falling
+        if (currentBeat >= 99 && !songPlayed) {
             song.play()
             song.jump(levelOne.settings.startTime, song.duration() - levelOne.settings.startTime)
             song.setVolume(0.1)
             songPlayed = true
         }
+        // #endregion
 
-        /* if (100 + (currentBeat % 250) < 205 && 100 + (currentBeat % 250) > 195) {
+        /* if (100 + (currentBeat % 250) < 205 && 100 + (currentBeat % 250) > 194) {
             console.log("Current Beat: " + currentBeat + " | Modulo: " + (100 + (currentBeat % 250)))
             shooting = true
         } */
 
-        currentBeat += 9 //11.083833333333
+        // #region beat falling code
+
+        // how fast the beats fall
+        currentBeat += (500 * (levelOne.settings.bpm)) / 3600
 
         for (i = 0; i < 176; i++) {
             fill(255)
+            // checks entire beat array if it matches the current beat number - if yes, draws the beat. this allows for gaps (e.g. notes 145 -> 147)
             for (j = 0; j < levelOne.beat.length; j++) {
                 if (i == levelOne.beat[j]) {
-                    rect(740, currentBeat - (500 * i / 2), 760, 200 + currentBeat - (500 * i / 2))
+                    rect(740, currentBeat - (500 * i / levelOne.settings.speedMultiplier), 760, 200 + currentBeat - (500 * i / levelOne.settings.speedMultiplier))
                 }
+                /*if (shooting&& (currentBeat - (500 * i / 2))>=146){
+                    points++         
+                }*/
             }
             fill(0)
         }
+        // #endregion
 
+        // #region when shooting:
+        if (shooting) {
+            fill(255)
+            // the bullet rectangle
+            rect(160 + bulletLength, 246, 800, 254)
+            bulletLength = 0
+            bulletLength = 800
+            bulletLength = 0
+
+            shooting = false
+
+            /* if (100 + (currentBeat % 250) < 300 && 100 + (currentBeat % 250) > 100) {
+                points++
+            } */
+        }
+        // #endregion
+
+        // level complete
         if (currentBeat > 45000) {
             completeMode = true
         }
@@ -117,6 +154,7 @@ function drawPlayer() {
     rectMode(CENTER)
     fill(color("#B9B9B9"))
     rect(84, 249, 150, 20)
+    fill(255)
 }
 
 function menu() {
@@ -132,6 +170,7 @@ function menu() {
 
     song.stop()
 
+    // reset variables
     songPlayed = false
     bulletLength = 0
     shooting = false
@@ -141,7 +180,10 @@ function menu() {
 }
 
 function complete() {
+    // gets percent accuracy
     percent = Math.round((points / levelOne.beat.length) * 100)
+
+    // checks for rank using percentage
     switch (true) {
         case percent >= 100:
             rank = "SS - Pure Perfect!"
@@ -162,10 +204,12 @@ function complete() {
             rank = "D - Bad!"
     }
 
+    // darker bg
     fill(0)
     tint(50, 255);
     background(levelOne.settings.background)
     tint(255, 255);
+
 
     fill(255)
     textAlign(CENTER)
@@ -175,25 +219,24 @@ function complete() {
     stroke(255)
     fill(0)
     rectMode(CORNERS)
-    rect(350,360,450,420)
+    rect(350, 360, 450, 420)
     noStroke()
     fill(255)
-    text("Menu",400,400)
+    text("Menu", 400, 400)
 
     song.stop()
 }
 
 function keyPressed() {
-    if (menuMode){
+    if (menuMode) {
         menuMode = false
-    } else{
+    } else {
         shooting = true
     }
 }
 
 function mousePressed() {
-    if(completeMode && mouseX > 350 && mouseX < 450 && mouseY < 420 && mouseY > 360){
-        console.log("sd")
+    if (completeMode && mouseX > 350 && mouseX < 450 && mouseY < 420 && mouseY > 360) {
         menuMode = true
         completeMode = false
     }
