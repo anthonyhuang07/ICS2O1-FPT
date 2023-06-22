@@ -4,6 +4,8 @@ Anthony Huang's website for the Final Performance Task for the ICS2O1 Grade 10 C
 
 Goal of the game: Try to get the highest accuracy possible!
 
+This project ran into the largest flurry of issues possible, and couldn't live up to what it would've been. I am still proud of the final result, however. This type of game written in under 300 lines? Wow.
+
 ## Creating a Custom Level
 
 ### NOTE: Adding different songs won't work at the moment. Instead, to make the default level more challenging, you may just simply remap the current map or change the speed multiplier and change the beat height. BPM change will also not work.
