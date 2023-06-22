@@ -21,8 +21,8 @@ This project ran into the largest flurry of issues possible, and couldn't live u
         "path": "../assets/sounds/songs/Idolize.mp3",
         "background": loadImage("../assets/images/backgrounds/levelOne.jpg"),
         "startTime": ,
-        "speedMultiplier": 
-        "beatHeight": 200
+        "speedMultiplier": ,
+        "beatHeight":
     },
     "beat": []
 }
