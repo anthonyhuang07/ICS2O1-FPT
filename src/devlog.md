@@ -78,4 +78,8 @@
 - Commented code
 - **HITBOXES FINALLY WORK!!!!!!!!!!!!!!!!!!! THE FINAL OBSTACLE IS OVER!!!!!!!!!!!!!**
     - Removes beats on hit
-- Removes heart system, in favor of accuracy system. You can only die if your points reach negative
+- Removes heart system, in favor of accuracy system. You can only die if your points reach negative, your score will be FAIL
+- Scuffed points system - adds 2 each time a good hit, every shot removes one. So there's that.
+- Added instructions on "custom" beatmap in README
+- Added instructions menu in the menu
+- FINISHED THE GAME!!!!!!!!!!!!!!!!!!!!!!!!

@@ -1,13 +1,13 @@
 // #region global variables
 
 // declare game variables
-let bulletLength, shooting, level, currentBeat, songPlayed, points, rank, percent, totalBeats
+let bulletLength, shooting, level, currentBeat, songPlayed, points, rank, percent, totalBeats, end
 // declare iterator variables
 let i, j
 // declare font variables
 let chokokutai, kanit
 // declare menu variables
-let menuMode, completeMode
+let menuMode, completeMode, instructionsMode
 
 // #endregion
 
@@ -48,7 +48,6 @@ function setup() {
     // declare basics
     createCanvas(800, 500);
     ellipseMode(CORNERS)
-    frameRate(75)
     menuMode = true
 }
 
@@ -57,7 +56,9 @@ function draw() {
         menu()
     } else if (completeMode) {
         complete()
-    } else if (!menuMode && !completeMode) {
+    } else if (instructionsMode){
+        instructions()
+    } else if (!menuMode && !completeMode && !instructionsMode) {
 
         // #region draw background
         fill(0)
@@ -101,21 +102,20 @@ function draw() {
         // how fast the beats fall
         currentBeat += (500 * (level.settings.bpm)) / (frameRate()*60)
 
-        for (i = 0; i < 176; i++) {
+        for (i = 0; i <= level.beat[level.beat.length-1]; i++) {
             fill(255)
+
             // checks entire beat array if it matches the current beat number - if yes, draws the beat. this allows for gaps (e.g. notes 145 -> 147)
             for (j = 0; j < level.beat.length; j++) {
                 if (i == level.beat[j]) {
                     rect(740, currentBeat - (500 * i / level.settings.speedMultiplier), 760, level.settings.beatHeight + currentBeat - (500 * i / level.settings.speedMultiplier))
-                    if (shooting && (currentBeat - (500 * i / level.settings.speedMultiplier))<=250&&(currentBeat - (500 * i / level.settings.speedMultiplier)+level.settings.beatHeight)>=250){
-                        const x = level.beat.indexOf(i)
-                        level.beat.splice(x,1)
-                        level.beat.splice[j, 1]
-                        points++
-                        hit.play()
-                        hit.setVolume(2)
-                    } else if ((shooting && (currentBeat - (500 * i / level.settings.speedMultiplier))>=250&&(currentBeat - (500 * i / level.settings.speedMultiplier)+level.settings.beatHeight)<=250)){
-                        points--
+                    if (shooting) {
+                        if ((currentBeat - (500 * i / level.settings.speedMultiplier)) <= 250 && (currentBeat - (500 * i / level.settings.speedMultiplier) + level.settings.beatHeight) >= 250) {
+                            level.beat.splice(j, 1)
+                            points+=2
+                            hit.play()
+                            hit.setVolume(2)
+                        }
                     }
                 }
             }
@@ -125,6 +125,7 @@ function draw() {
 
         // #region when shooting:
         if (shooting) {
+            points--
             fill(255)
             // the bullet rectangle
             rect(160 + bulletLength, 246, 800, 254)
@@ -138,6 +139,10 @@ function draw() {
 
         // level complete
         if (currentBeat > 45000) {
+            completeMode = true
+        }
+
+        if (points == -1){
             completeMode = true
         }
     }
@@ -164,6 +169,11 @@ function menu() {
     textSize(25)
     textFont(kanit)
     text("Press Any Key To Play", 400, 300)
+    rectMode(CORNERS)
+    rect(320, 360, 480, 420)
+    noStroke()
+    fill(255)
+    text("Instructions", 400, 400)
 
     song.stop()
 
@@ -209,6 +219,11 @@ function complete() {
             rank = "D - Bad!"
     }
 
+    if (points == -1){
+        percent = "FAILED"
+        rank = "F - Failed!"
+    }
+
     // darker bg
     fill(0)
     tint(50, 255);
@@ -232,6 +247,19 @@ function complete() {
     song.stop()
 }
 
+function instructions() {
+    background(0)
+    textSize(20)
+    text("How to Play:\n\nWelcome to Rhythm Revolver! \nThis is a game where you shoot a gun at falling beats\ntimed to the rhythm of the music.\n\n- Press any key to shoot your gun\n- Shooting a beat will give you one point,\na miss will make you lose one\n- If you go below 0 points, you lose\n- Letting beats pass will not win or lose any points\n- Your accuracy will be determined at the end\n- To play custom beatmaps, consult the README on the GitHub Repo",400,50)
+    rect(350, 360, 450, 420)
+    stroke(255)
+    fill(0)
+    textSize(30)
+    text("Close", 400, 400)
+    noStroke()
+    fill(255)
+}
+
 function keyPressed() {
     if (menuMode) {
         menuMode = false
@@ -244,6 +272,12 @@ function mousePressed() {
     if (completeMode && mouseX > 350 && mouseX < 450 && mouseY < 420 && mouseY > 360) {
         menuMode = true
         completeMode = false
+    } else if (menuMode && mouseX > 320 && mouseX < 480 && mouseY < 420 && mouseY > 360) {
+        instructionsMode = true
+        menuMode = false
+    } else if (instructionsMode && mouseX > 350 && mouseX < 450 && mouseY < 420 && mouseY > 360){
+        menuMode = true
+        instructionsMode = false
     }
 
     if (!menuMode && mouseX > 10 && mouseX < 50 && mouseY > 10 && mouseY < 50) {
