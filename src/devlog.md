@@ -82,4 +82,5 @@
 - Scuffed points system - adds 2 each time a good hit, every shot removes one. So there's that.
 - Added instructions on "custom" beatmap in README
 - Added instructions menu in the menu
+- Added custom beatmap system - scuffed and not fully working, but can be used to increase the difficulty of the level instead.
 - FINISHED THE GAME!!!!!!!!!!!!!!!!!!!!!!!!
